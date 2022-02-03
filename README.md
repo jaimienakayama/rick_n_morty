@@ -1,1 +1,1 @@
-This app uses [The Rick And Morty API] ("https://rickandmortyapi.com/")
+This app uses [The Rick And Morty API](https://rickandmortyapi.com/)
