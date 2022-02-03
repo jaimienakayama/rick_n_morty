@@ -3,26 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import styles from "../../styles/Character.module.css";
 import { RiHomeHeartFill } from "react-icons/ri";
+import { useRouter } from "next/router";
 
 const Character = ({ character }) => {
-  const {
-    id,
-    name,
-    status,
-    species,
-    gender,
-    origin,
-    location,
-    image,
-    episode,
-  } = character;
   const [episodeName, setEpisodeName] = useState("");
   const [episodeId, setEpisodeId] = useState("");
-  const locationId = location.url.slice(41);
-  const originId = origin.url.slice(41);
 
   useEffect(() => {
-    const firstEpisode = episode[0];
+    const firstEpisode = character.episode[0];
     const getEpisodeName = async () => {
       const res = await fetch(firstEpisode);
       const data = await res.json();
@@ -30,29 +18,46 @@ const Character = ({ character }) => {
       setEpisodeId(data.id);
     };
     getEpisodeName();
-  }, [episode]);
+  });
+
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
+
+  const locationId = character.location.url.slice(41);
+  const originId = character.origin.url.slice(41);
 
   return (
     <div className={styles.container}>
-      <div key={id} className={styles.card}>
-        <Image src={image} alt={name} width={400} height={400}></Image>
+      <div key={character.id} className={styles.card}>
+        <Image
+          src={character.image}
+          alt={character.name}
+          width={400}
+          height={400}
+        ></Image>
         <div className={styles.info}>
-          <Link href={`/characters/${encodeURIComponent(id)}`} passHref>
-            <h2 className={styles.header2}>{name}</h2>
+          <Link
+            href={`/characters/${encodeURIComponent(character.id)}`}
+            passHref
+          >
+            <h2 className={styles.header2}>{character.name}</h2>
           </Link>
           <div className={styles.status}>
-            <div className={styles[status.toLowerCase()]}></div>
-            {status} - {species} - {gender}
+            <div className={styles[character.status.toLowerCase()]}></div>
+            {character.status} - {character.species} - {character.gender}
           </div>
           <p>Last known location:</p>
-          {location.name === "unknown" ? (
-            <h4>{location.name}</h4>
+          {character.location.name === "unknown" ? (
+            <h4>{character.location.name}</h4>
           ) : (
             <Link
               href={`/locations/${encodeURIComponent(locationId)}`}
               passHref
             >
-              <h4 className={styles.header4}>{location.name}</h4>
+              <h4 className={styles.header4}>{character.location.name}</h4>
             </Link>
           )}
           <p>First seen in:</p>
@@ -60,11 +65,11 @@ const Character = ({ character }) => {
             <h4 className={styles.header4}>{episodeName}</h4>
           </Link>
           <p>Origin:</p>
-          {origin.name === "unknown" ? (
-            <h4>{origin.name}</h4>
+          {character.origin.name === "unknown" ? (
+            <h4>{character.origin.name}</h4>
           ) : (
             <Link href={`/locations/${encodeURIComponent(originId)}`} passHref>
-              <h4 className={styles.header4}>{origin.name}</h4>
+              <h4 className={styles.header4}>{character.origin.name}</h4>
             </Link>
           )}
         </div>

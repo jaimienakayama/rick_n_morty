@@ -2,21 +2,27 @@ import styles from "../../styles/Location.module.css";
 import Individual from "../../components/Individual.js";
 import Link from "next/link";
 import { RiHomeHeartFill } from "react-icons/ri";
+import { useRouter } from "next/router";
 
 const Location = ({ location }) => {
-  const { id, name, type, dimension, residents } = location;
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className={styles.container}>
-      <div key={id} className={styles.card}>
-        <h2 className={styles.header2}>{name}</h2>
+      <div key={location.id} className={styles.card}>
+        <h2 className={styles.header2}>{location.name}</h2>
         <p>Type:</p>
-        <h4>{type}</h4>
+        <h4>{location.type}</h4>
         <p>Dimension:</p>
-        <h4>{dimension}</h4>
+        <h4>{location.dimension}</h4>
         <p>Residents:</p>
         <div className={styles.residents}>
-          {residents.length ? (
-            residents.map((url, i) => {
+          {location.residents.length ? (
+            location.residents.map((url, i) => {
               return <Individual key={i} url={url} />;
             })
           ) : (
@@ -49,14 +55,14 @@ export const getStaticPaths = async () => {
   const res = await fetch(`https://rickandmortyapi.com/api/location`);
   const data = await res.json();
 
-  const paths = data.results.map((d) => ({
-    params: {
-      locationId: d.id.toString(),
-    },
-  }));
-
   return {
-    paths,
+    paths: data.results.map((d) => {
+      return {
+        params: {
+          locationId: d.id.toString(),
+        },
+      };
+    }),
     fallback: true,
   };
 };

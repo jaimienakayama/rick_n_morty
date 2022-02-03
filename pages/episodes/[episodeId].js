@@ -2,21 +2,27 @@ import styles from "../../styles/Episode.module.css";
 import Individual from "../../components/Individual.js";
 import Link from "next/link";
 import { RiHomeHeartFill } from "react-icons/ri";
+import { useRouter } from "next/router";
 
 const Episode = ({ data }) => {
-  const { id, name, air_date, episode, characters } = data;
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className={styles.container}>
-      <div key={id} className={styles.card}>
-        <h2 className={styles.header2}>{name}</h2>
+      <div key={data.id} className={styles.card}>
+        <h2 className={styles.header2}>{data.name}</h2>
         <p>Air date:</p>
-        <h4>{air_date}</h4>
+        <h4>{data.air_date}</h4>
         <p>Episode:</p>
-        <h4>{episode}</h4>
+        <h4>{data.episode}</h4>
         <p>Characters:</p>
         <div className={styles.characters}>
-          {characters.length ? (
-            characters.map((url, i) => {
+          {data.characters.length ? (
+            data.characters.map((url, i) => {
               return <Individual key={i} url={url} />;
             })
           ) : (
