@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/Link";
+import Link from "next/link";
 import styles from "../styles/Card.module.css";
 
 const Card = ({ character }) => {
