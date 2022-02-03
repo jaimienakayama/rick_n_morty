@@ -1,0 +1,23 @@
+.individual {
+  display: flex;
+  margin: 10px;
+  align-items: center;
+}
+
+.individual h4 {
+  margin: 20px;
+}
+
+.name {
+  max-width: 250px;
+  transition: all 0.2s ease-in-out;
+}
+
+.name:hover {
+  color: #ff8800;
+  cursor: pointer;
+}
+
+.image {
+  border-radius: 50px;
+}
