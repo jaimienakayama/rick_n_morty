@@ -25,7 +25,7 @@ const Card = ({ character }) => {
     <div key={id} className={styles.card}>
       <Image src={image} alt={name} width={220} height={220}></Image>
       <div className={styles.info}>
-        <Link href={`/characters/${encodeURIComponent(id)}`}>
+        <Link href={`/characters/${encodeURIComponent(id)}`} passHref>
           <h2 className={styles.header2}>{name}</h2>
         </Link>
         <div className={styles.status}>
@@ -36,12 +36,12 @@ const Card = ({ character }) => {
         {location.name === "unknown" ? (
           <h4>{location.name}</h4>
         ) : (
-          <Link href={`/locations/${encodeURIComponent(locationId)}`}>
+          <Link href={`/locations/${encodeURIComponent(locationId)}`} passHref>
             <h4 className={styles.header4}>{location.name}</h4>
           </Link>
         )}
         <p>First seen in:</p>
-        <Link href={`/episodes/${encodeURIComponent(episodeId)}`}>
+        <Link href={`/episodes/${encodeURIComponent(episodeId)}`} passHref>
           <h4 className={styles.header4}>{episodeName}</h4>
         </Link>
       </div>
